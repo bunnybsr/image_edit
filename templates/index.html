@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Transformer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .slider-container {
+            margin: 20px 0;
+        }
+        .image-preview {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .image-preview img {
+            max-width: 45%;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+        .input-group input[type="number"] {
+            width: 60px;
+            margin-left: 10px;
+        }
+    </style>
+    <script>
+        function validateInput(input, min, max) {
+            if (input.value < min) {
+                input.value = min;
+            } else if (input.value > max) {
+                input.value = max;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Image Transformer</h1>
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Upload an image:</label>
+            <input type="file" name="file" id="file" class="form-control-file">
+        </div>
+        <div class="slider-container">
+            <label for="brightness">Brightness:</label>
+            <div class="input-group">
+                <input type="range" name="brightness" id="brightness" min="0.1" max="2.0" step="0.1" value="{{ brightness }}" oninput="document.getElementById('brightness-value').value = this.value">
+                <input type="number" id="brightness-value" min="0.1" max="2.0" step="0.1" value="{{ brightness }}" oninput="document.getElementById('brightness').value = this.value; validateInput(this, 0.1, 2.0)">
+            </div>
+        </div>
+        <div class="slider-container">
+            <label for="contrast">Contrast:</label>
+            <div class="input-group">
+                <input type="range" name="contrast" id="contrast" min="0.1" max="2.0" step="0.1" value="{{ contrast }}" oninput="document.getElementById('contrast-value').value = this.value">
+                <input type="number" id="contrast-value" min="0.1" max="2.0" step="0.1" value="{{ contrast }}" oninput="document.getElementById('contrast').value = this.value; validateInput(this, 0.1, 2.0)">
+            </div>
+        </div>
+        <div class="slider-container">
+            <label for="sharpness">Sharpness:</label>
+            <div class="input-group">
+                <input type="range" name="sharpness" id="sharpness" min="0.1" max="2.0" step="0.1" value="{{ sharpness }}" oninput="document.getElementById('sharpness-value').value = this.value">
+                <input type="number" id="sharpness-value" min="0.1" max="2.0" step="0.1" value="{{ sharpness }}" oninput="document.getElementById('sharpness').value = this.value; validateInput(this, 0.1, 2.0)">
+            </div>
+        </div>
+        <div class="slider-container">
+            <label for="sepia">Sepia:</label>
+            <div class="input-group">
+                <input type="range" name="sepia" id="sepia" min="0" max="1" step="0.1" value="{{ sepia }}" oninput="document.getElementById('sepia-value').value = this.value">
+                <input type="number" id="sepia-value" min="0" max="1" step="0.1" value="{{ sepia }}" oninput="document.getElementById('sepia').value = this.value; validateInput(this, 0, 1)">
+            </div>
+        </div>
+        <div class="slider-container">
+            <label for="blur">Blur (Gaussian):</label>
+            <div class="input-group">
+                <input type="range" name="blur" id="blur" min="0" max="10" step="1" value="{{ blur }}" oninput="document.getElementById('blur-value').value = this.value">
+                <input type="number" id="blur-value" min="0" max="10" step="1" value="{{ blur }}" oninput="document.getElementById('blur').value = this.value; validateInput(this, 0, 10)">
+            </div>
+        </div>
+        <div class="slider-container">
+            <label for="edge-detection">Edge Detection (Canny Threshold):</label>
+            <div class="input-group">
+                <input type="range" name="edge-detection" id="edge-detection" min="50" max="150" step="10" value="{{ edge_detection }}" oninput="document.getElementById('edge-detection-value').value = this.value">
+                <input type="number" id="edge-detection-value" min="50" max="150" step="10" value="{{ edge_detection }}" oninput="document.getElementById('edge-detection').value = this.value; validateInput(this, 50, 150)">
+            </div>
+        </div>
+        <button type="submit" name="transform" class="btn btn-primary">Transform</button>
+        <button type="submit" name="save" class="btn btn-success">Save</button>
+    </form>
+
+    {% if original and transformed %}
+    <div class="image-preview">
+        <div>
+            <h4>Original Image</h4>
+            <img src="{{ original }}" alt="Original Image">
+        </div>
+        <div>
+            <h4>Transformed Image</h4>
+            <img src="{{ transformed }}" alt="Transformed Image">
+        </div>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
